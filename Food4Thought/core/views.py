@@ -13,7 +13,7 @@ from django.core.urlresolvers import reverse
 #	return render(request, 'login.html', {})
 @login_required
 def home(request):
-	profile, created = UserProfile.objects.get_or_create(user=request.user, defaults={'can_cook':False, 'rate':0,})
+	#profile, created = UserProfile.objects.get_or_create(user=request.user, defaults={'can_cook':False, 'rate':0,})
 	return render(request, 'home.html', {})
 
 
