@@ -6,8 +6,8 @@ from geoposition.fields import GeopositionField
 # Create your models here.
 
 class UserProfile(models.Model):
-	user = models.OneToOneField(User, unique = True)
-	name = models.CharField(max_length=50, blank=False)
+	user = models.OneToOneField(User, unique = True, related_name="profile")
+	#name = models.CharField(max_length=50, blank=False)
 	phone_number = models.CharField(max_length=20, blank=True)
 	can_cook = models.BooleanField()
 	# profile_picture = models.ImageField(upload_to="profile-pictures", blank=True)
@@ -32,7 +32,7 @@ class Request(models.Model):
 	lon = models.FloatField(blank=False)
 
 	def __unicode__(self):
-		return self.id
+		return "Request " + str(self.id) + " " + self.order 
 
 	@staticmethod
 	def get_request(user):
@@ -48,7 +48,7 @@ class State(models.Model):
 	state = models.CharField(max_length=10, blank=False)
 
 	def __unicode__(self):
-		return sefl.state
+		return "State " + state 
 
 class TransactionManager(models.Manager):
 	def create_transaction(self, rid, uid, stateid):
@@ -62,7 +62,7 @@ class Transaction(models.Model):
 	stateid = models.ForeignKey(State)
 
 	def __unicode__(self):
-		return self.id
+		return "Transaction " + str(self.id)
 
 	@staticmethod
 	def get_transaction(user):
@@ -82,4 +82,4 @@ class Review(models.Model):
 	comment = models.CharField(max_length=140, blank=False)
 
 	def __unicode__(self):
-		return self.id
+		return "Review " + str(self.id)

@@ -11,7 +11,7 @@ class UserProfileInline(admin.StackedInline):
 
 class UserProfileAdmin(UserAdmin):
     inlines=(UserProfileInline,)
-
+    list_display = []
 class RequestAdmin(admin.ModelAdmin):
     list_display = ['uid', 'order', 'info', 'lat', 'lon']
 
