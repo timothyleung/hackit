@@ -16,10 +16,10 @@ class UserProfile(models.Model):
 class RequestManager(models.Manager):
 	def create_menu(self, uid, order, info):
 		request = self.create(uid = uid, 
-								order = order, 
-								lon = lon, 
-								lat = lat, 
-								info = info)
+							  order = order, 
+							  lon = lon, 
+							  lat = lat, 
+							  info = info)
 		request.save()
 		return request
 

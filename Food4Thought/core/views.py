@@ -1,9 +1,6 @@
-from django.shortcuts import render
-from core.models import Request
+from django.shortcuts import render 
 import json
 
 # Create your views here.
-def login(request):
-	# -33.9174103,151.2313068
-	r = Request.objects.all()
-	return render(request, 'base.html', {'locations': r})
+def login(request): 
+	return render(request, 'base.html', {})
