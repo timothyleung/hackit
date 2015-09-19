@@ -13,7 +13,7 @@
 	      	html, body { height: 100%; margin: 0; padding: 0; } 
 	      	#map { 
 			  	border:1px solid black;
-			  	height: 100%;
+			  	height: 45%;
 			  	width: 100%;
 			  	border-radius: 4px;
 			}
@@ -24,6 +24,7 @@
 		<div id="map"></div>
  
 	    <script type="text/javascript">	    
+		  	
 		  	// Initialize Google map
 		  	// Center to user's location
 		  	function initMap() {
@@ -42,15 +43,13 @@
 			   	}
 			}
 
+			// Get updated marker's location
+			var lat;
+			var lng;
+
 			// Display all requests' location
 			// Create Google map
 			function createMap(lat, lon) {
-				// Retrieve all data from django
-				var locations = [];
-				{% for location in locations %}
-					locations.push([{{location.lat}}, {{location.lon}}]);
-				{% endfor %}
-
 				// Set center
 				var myLatLng = {lat: lat, lng: lon};
 			  	var map = new google.maps.Map(document.getElementById('map'), {
@@ -58,22 +57,22 @@
 			    	center: myLatLng
 			  	});
 
-			  	// Create info buble to display request data
-				var infowindow = new google.maps.InfoWindow();
-				var marker, i;
-				for (i = 0; i < locations.length; i++) {  
-				  	marker = new google.maps.Marker({
-				    	position: new google.maps.LatLng(locations[i][0], locations[i][1]),
-				    	map: map
-				  	});
+			  	// TEST: REMOVE 
+			  	var marker = new google.maps.Marker({
+			  		position: new google.maps.LatLng(-33.9174103, 151.231068),
+			  		map: map,
+			  		draggable: true,
+			  		animation: google.maps.Animation.DROP
+			  	})
 
-				  	google.maps.event.addListener(marker, 'click', (function(marker, i) {
-				    	return function() {
-				      		infowindow.setContent("locations[i][0]");
-				      		infowindow.open(map, marker);
-				    	}
-				  	})(marker, i));
-				}
+			  	google.maps.event.addListener(marker, 'dragend', function (event) {
+			  			lat = event.latLng.lat();
+			  			lng = event.latLng.lng();
+			            console.log(event.latLng.lat());
+			            console.log(event.latLng.lng());
+			        });
+			  
+			    google.maps.event.addDomListener(window, "load", initMap());
 			}
 	  	</script> 
 	</body>

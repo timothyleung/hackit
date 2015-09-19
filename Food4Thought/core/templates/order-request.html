@@ -1,0 +1,137 @@
+{% load staticfiles %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<script type="text/javascript" src="{% static 'core/js/jquery-2.1.0.min.js' %}"></script>
+		<link rel="stylesheet" href="{% static 'core/css/bootstrap.min.css' %}" >
+		<script src="{% static 'core/js/bootstrap.js' %}" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkNjPt7dfPdQjFmsksrzq8s1KQwi21UdM&callback=initMap"></script>
+	    <style type="text/css">
+	      	html, body { height: 100%; margin: 0; padding: 0; } 
+	      	#map { 
+			  	border:1px solid black;
+			  	height: 45%;
+			  	width: 100%;
+			  	border-radius: 25px;
+			}
+
+			#entryform {
+			    display: none;
+			    width:300px;
+			    padding-bottom: 30px;
+			}
+	    </style>
+	</head>
+  	<body>
+		<!-- <div id="map_canvas"></div> -->
+		<div id="map"></div>
+ 
+	    <script type="text/javascript">	    
+		  	
+		  	// Initialize Google map
+		  	// Center to user's location
+		  	function initMap() {
+				if (navigator.geolocation) {
+ 			     	success = function(position) {
+			        	createMap(position.coords.latitude, position.coords.longitude);
+			      	};
+ 			      	
+ 			      	error = function() { 
+ 			      		createMap(-33.9174103, 151.2313068); 
+ 			      	}
+ 
+ 			    	navigator.geolocation.getCurrentPosition(success, error);
+ 			    } else {
+			    	createMap(-33.9174103, 151.2313068);
+			   	}
+			}
+
+			// Display all requests' location
+			// Create Google map
+			function createMap(lat, lon) {
+				// Retrieve all data from django
+				var cooks = [];
+
+				// TEST: Uncomment
+				// {% for location in locations %}
+				// 	cooks.push([{{location.lat}}, {{location.lon}}]);
+				// {% endfor %}
+
+				// TEST: remove 
+				cooks.push([-33.9174103, 151.2313068]);
+				cooks.push([-31, 152]);
+				cooks.push([-32, 151]);
+				cooks.push([-34, 150]);
+
+				// Set center
+				var myLatLng = {lat: lat, lng: lon};
+			  	var map = new google.maps.Map(document.getElementById('map'), {
+			    	zoom: 15,
+			    	center: myLatLng
+			  	});
+
+			  	// Create info buble to display request data
+				var infowindow = new google.maps.InfoWindow();
+				var form = $("#entryform").clone().show();
+			    var infowindow_content = form[0];
+				var marker;
+				for (var i = 0; i < cooks.length; i++) {  
+				  	marker = new google.maps.Marker({
+				    	position: new google.maps.LatLng(cooks[i][0], cooks[i][1]),
+				    	map: map,
+				    	animation: google.maps.Animation.DROP,
+				    	dragable: false
+				  	});
+
+				  	google.maps.event.addListener(marker, 'click', (function(marker, i) {
+				    	return function() {
+				    		// Show request detail form
+				      		infowindow.setContent(infowindow_content);
+				      		infowindow.open(map, this);
+				    	}
+				  	})(marker, infowindow));
+				}
+			}
+	  	</script> 
+
+
+	  	<div id="entryform" id="entryform">
+		    <h1>Add me!</h1>
+		    <form role="form" >
+		        <div class="form-group">
+		            <label>Your Name</label>
+		            <input type="text" class="form-control" name="user" placeholder="Enter your name" required="yes">
+		        </div>
+		        <div class="form-group">
+		            <label>Title</label>
+		            <input type="text" class="form-control" name="name" placeholder="Enter a title" required="yes">
+		        </div>
+		        <div class="form-group">
+		            <label>What is this?</label>
+		            <div class="radio">
+		                <label>
+		                <input type="radio" name="category" value="asset" checked>
+		                    <span class="glyphicon glyphicon-thumbs-up"></span> an asset
+		                </label>
+		            </div>
+		            <div class="radio">
+		                <label>
+		                <input type="radio" name="category" value="deficit">
+		                    <span class="glyphicon glyphicon-thumbs-down"></span> a deficit
+		                </label>
+		            </div>
+		        </div>
+		        <div class="form-group">
+		            <label>Description</label>
+		            <textarea name="description" class="form-control" rows="3" required="yes"></textarea>
+		        </div>
+		        <div class="form-group">
+		            <button class="btn btn-primary">submit</button>
+		        </div>
+		    </form>
+		</div>
+	</body>
+</html>

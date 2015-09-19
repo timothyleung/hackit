@@ -3,6 +3,8 @@ from forms import *
 
 urlpatterns = patterns('',
     url(r'^$', 'core.views.home', name='home'),
+    url(r'^request$', 'core.views.order-request', name='request'),
+    url(r'^reques$', 'core.views.send-request', name='send'),
     url(r'^login$', 'django.contrib.auth.views.login', {'template_name':'login.html',
                                                         'authentication_form':UserAuthForm,
                                                         'extra_context': {'registration_form': RegistrationForm},
