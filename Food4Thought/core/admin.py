@@ -13,7 +13,7 @@ class UserProfileAdmin(UserAdmin):
     inlines=(UserProfileInline,)
 
 class RequestAdmin(admin.ModelAdmin):
-    list_display = ['uid', 'order', 'info', 'where']
+    list_display = ['uid', 'order', 'info', 'lat', 'lon']
 
 class StateAdmin(admin.ModelAdmin):
     list_display = ['state']

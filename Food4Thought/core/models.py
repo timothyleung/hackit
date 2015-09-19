@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 # from string import join
 from django.core.mail import send_mail
+from geoposition.fields import GeopositionField
 # Create your models here.
 
 class UserProfile(models.Model):
@@ -14,7 +15,11 @@ class UserProfile(models.Model):
 
 class RequestManager(models.Manager):
 	def create_menu(self, uid, order, info):
-		request = self.create(uid = uid, order = order, where = where, info = info)
+		request = self.create(uid = uid, 
+								order = order, 
+								lon = lon, 
+								lat = lat, 
+								info = info)
 		request.save()
 		return request
 
@@ -22,7 +27,9 @@ class Request(models.Model):
 	uid = models.ForeignKey(User)
 	order = models.CharField(max_length=140, blank=False)
 	info = models.CharField(max_length=200, blank=True)
-	where = models.CharField(max_length=140, blank=False)
+	# where = models.CharField(max_length=140, blank=False)
+	lat = models.FloatField(blank=False)
+	lon = models.FloatField(blank=False)
 
 	def __unicode__(self):
 		return self.id
