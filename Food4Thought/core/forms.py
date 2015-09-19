@@ -14,6 +14,18 @@ class UserAuthForm(AuthenticationForm):
                               label='',
                               widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Password'}))
 
+class RequestForm(forms.ModelForm):
+    class Meta:
+        model=Request
+        fields = '__all__'
+        exclude = {'lat', 'lon', 'uid'}
+        widgets = {
+            'order' : forms.TextInput(attrs={'class':'form-control',
+                                                     'placeholder': 'Order'}),
+            'info' : forms.TextInput(attrs={'class':'form-control',
+                                                    'placeholder': 'Info'}),
+        }
+
 class RegistrationForm(forms.Form):
     name = forms.CharField(max_length = 20, 
                                  label = '',

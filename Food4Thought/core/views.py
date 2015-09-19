@@ -13,8 +13,10 @@ from django.core.urlresolvers import reverse
 #	return render(request, 'login.html', {})
 @login_required
 def home(request):
+	print "HOME IS CALLED"
 	#profile, created = UserProfile.objects.get_or_create(user=request.user, defaults={'can_cook':False, 'rate':0,})
-	return render(request, 'home.html', {})
+	request_form = RequestForm(request.POST)
+	return render(request, 'home.html', {'request_form':request_form})
 
 
 def go_to_register_page(request):
@@ -25,7 +27,7 @@ def register(request):
 	# or just login directly 
 	print "Register"
 	if request.method == "GET":
-		return render(reverse('home'))
+		return redirect(reverse('home'))
 
 	context = {}
 	form = RegistrationForm(request.POST)
