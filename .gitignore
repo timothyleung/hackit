@@ -4,3 +4,5 @@
 *.pyc
 
 Food4Thought/Food4Thought/__pycache__/urls.cpython-34.pyc
+
+*.pyc

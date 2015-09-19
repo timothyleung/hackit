@@ -9,7 +9,7 @@ class UserProfile(models.Model):
 	name = models.CharField(max_length=50, blank=False)
 	phone_number = models.CharField(max_length=20, blank=True)
 	can_cook = models.BooleanField()
-	profile_picture = models.ImageField(upload_to="profile-pictures", blank=True)
+	# profile_picture = models.ImageField(upload_to="profile-pictures", blank=True)
 	rate = models.IntegerField()
 
 class RequestManager(models.Manager):
