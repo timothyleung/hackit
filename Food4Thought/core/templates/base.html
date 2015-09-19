@@ -23,17 +23,33 @@
 		<!-- <div id="map_canvas"></div> -->
 		<div id="map"></div>
  
-	    <script type="text/javascript">
-		    function initMap() {
-			  	var locations = [];
+	    <script type="text/javascript">	    
+		  	var locations = [];
 
+		    function initMap() {
 				{% for location in locations %}
 					locations.push([{{location.lat}}, {{location.lon}}]);
 				{% endfor %}
 
 				console.log(locations);
 
-				var myLatLng = {lat: -25.363, lng: 131.044};
+				if (navigator.geolocation) {
+ 			     	success = function(position) {
+			        	createMap(position.coords.latitude, position.coords.longitude);
+			      	};
+ 			      	
+ 			      	error = function() { 
+ 			      		createMap(-33.9174103, 151.2313068); 
+ 			      	}
+ 
+ 			    	navigator.geolocation.getCurrentPosition(success, error);
+ 			    } else {
+			    	createMap(-33.9174103, 151.2313068);
+			   	}
+			}
+
+			function createMap(lat, lon) {
+				var myLatLng = {lat: lat, lng: lon};
 			  	var map = new google.maps.Map(document.getElementById('map'), {
 			    	zoom: 15,
 			    	center: myLatLng
@@ -43,7 +59,7 @@
 				var marker, i;
 				for (i = 0; i < locations.length; i++) {  
 				  	marker = new google.maps.Marker({
-				    	position: new google.maps.LatLng(locations[i][1], locations[i][2]),
+				    	position: new google.maps.LatLng(locations[i][0], locations[i][1]),
 				    	map: map
 				  	});
 
