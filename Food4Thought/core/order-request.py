@@ -4,8 +4,8 @@ import json
 
 # Required login
 def request(request):
-	all_waiting_requests = Request.objects.all()
-	return render(request, 'order-request.html', {'locations': all_waiting_requests})
+	locations = {}; #Request.objects.all()
+	return render(request, 'order-request.html', {'locations': locations})
 
 # Required login
 def send(request):

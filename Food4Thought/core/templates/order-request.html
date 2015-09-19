@@ -13,9 +13,15 @@
 	      	html, body { height: 100%; margin: 0; padding: 0; } 
 	      	#map { 
 			  	border:1px solid black;
-			  	height: 100%;
+			  	height: 45%;
 			  	width: 100%;
-			  	border-radius: 4px;
+			  	border-radius: 25px;
+			}
+
+			#entryform {
+			    display: none;
+			    width:300px;
+			    padding-bottom: 30px;
 			}
 	    </style>
 	</head>
@@ -47,10 +53,18 @@
 			// Create Google map
 			function createMap(lat, lon) {
 				// Retrieve all data from django
-				var locations = [];
-				{% for location in locations %}
-					locations.push([{{location.lat}}, {{location.lon}}]);
-				{% endfor %}
+				var cooks = [];
+
+				// TEST: Uncomment
+				// {% for location in locations %}
+				// 	cooks.push([{{location.lat}}, {{location.lon}}]);
+				// {% endfor %}
+
+				// TEST: remove 
+				cooks.push([-33.9174103, 151.2313068]);
+				cooks.push([-31, 152]);
+				cooks.push([-32, 151]);
+				cooks.push([-34, 150]);
 
 				// Set center
 				var myLatLng = {lat: lat, lng: lon};
@@ -61,22 +75,63 @@
 
 			  	// Create info buble to display request data
 				var infowindow = new google.maps.InfoWindow();
-
+				var form = $("#entryform").clone().show();
+			    var infowindow_content = form[0];
 				var marker;
-				for (var i = 0; i < locations.length; i++) {  
+				for (var i = 0; i < cooks.length; i++) {  
 				  	marker = new google.maps.Marker({
-				    	position: new google.maps.LatLng(locations[i][0], locations[i][1]),
-				    	map: map
+				    	position: new google.maps.LatLng(cooks[i][0], cooks[i][1]),
+				    	map: map,
+				    	animation: google.maps.Animation.DROP,
+				    	dragable: false
 				  	});
 
 				  	google.maps.event.addListener(marker, 'click', (function(marker, i) {
 				    	return function() {
-				      		infowindow.setContent(this.html);
+				    		// Show request detail form
+				      		infowindow.setContent(infowindow_content);
 				      		infowindow.open(map, this);
 				    	}
 				  	})(marker, infowindow));
 				}
 			}
 	  	</script> 
+
+
+	  	<div id="entryform" id="entryform">
+		    <h1>Add me!</h1>
+		    <form role="form" >
+		        <div class="form-group">
+		            <label>Your Name</label>
+		            <input type="text" class="form-control" name="user" placeholder="Enter your name" required="yes">
+		        </div>
+		        <div class="form-group">
+		            <label>Title</label>
+		            <input type="text" class="form-control" name="name" placeholder="Enter a title" required="yes">
+		        </div>
+		        <div class="form-group">
+		            <label>What is this?</label>
+		            <div class="radio">
+		                <label>
+		                <input type="radio" name="category" value="asset" checked>
+		                    <span class="glyphicon glyphicon-thumbs-up"></span> an asset
+		                </label>
+		            </div>
+		            <div class="radio">
+		                <label>
+		                <input type="radio" name="category" value="deficit">
+		                    <span class="glyphicon glyphicon-thumbs-down"></span> a deficit
+		                </label>
+		            </div>
+		        </div>
+		        <div class="form-group">
+		            <label>Description</label>
+		            <textarea name="description" class="form-control" rows="3" required="yes"></textarea>
+		        </div>
+		        <div class="form-group">
+		            <button class="btn btn-primary">submit</button>
+		        </div>
+		    </form>
+		</div>
 	</body>
 </html>
