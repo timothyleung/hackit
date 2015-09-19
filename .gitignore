@@ -12,3 +12,7 @@ Food4Thought/Food4Thought/__pycache__/urls.cpython-34.pyc
 Food4Thought/core/templates/jquery.js
 
 Food4Thought/core/migrations/0002_auto_20150919_1906.py
+
+*.sqlite3
+
+*.pyc
