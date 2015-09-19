@@ -54,4 +54,3 @@ def register(request):
 	return redirect(reverse('home'))
 
 
->>>>>>> master

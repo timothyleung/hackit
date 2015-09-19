@@ -14,10 +14,6 @@ class UserAuthForm(AuthenticationForm):
                               label='',
                               widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'Password'}))
 
-#class SetupForm(forms.Form):
-    # form for set up the employer details, employee details, company details
-    
-
 class RegistrationForm(forms.Form):
     name = forms.CharField(max_length = 20, 
                                  label = '',
@@ -59,18 +55,4 @@ class RegistrationForm(forms.Form):
         return email
 
 
-# class UserProfileForm(forms.ModelForm):
-#     class Meta:
-#         model = UserProfile
-#         fields = '__all__'
-#         exclude = {'user', 'work_in', 'customized', 'approved'}
-#         widgets = {
-#             'facebook_page' : forms.TextInput(attrs={'class':'form-control',
-#                                                      'placeholder': 'Your facebook'}),
-#             'phone_number' : forms.TextInput(attrs={'class':'form-control',
-#                                                     'placeholder': 'Personal phone number'}),
-#             'profile_picture' : forms.FileInput(attrs={'id':'file-input'}),
-#         }
-
-
-                                                            
+                                                         

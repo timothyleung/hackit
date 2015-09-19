@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 # from string import join
 from django.core.mail import send_mail
-from geoposition.fields import GeopositionField
+#from geoposition.fields import GeopositionField
 # Create your models here.
 
 class UserProfile(models.Model):
