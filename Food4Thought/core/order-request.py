@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from core.models import Request
+from core.models import User
 import json
 
 # Required login
 def request(request):
-	locations = {}; #Request.objects.all()
+	locations = Request.objects.all() 
 	return render(request, 'order-request.html', {'locations': locations})
 
 # Required login

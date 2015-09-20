@@ -14,12 +14,15 @@ from django.core.urlresolvers import reverse
 @login_required
 def home(request):
 	user = request.user
-	print user.profile.phone_number, user.first_name, user.username
+	# print user.profile.phone_number, user.first_name, user.username
 
 	#profile, created = UserProfile.objects.get_or_create(user=request.user, defaults={'can_cook':False, 'rate':0,})
 	request_form = RequestForm(request.POST)
-	return render(request, 'home.html', {'request_form':request_form})
 
+	# Get all available request
+	reqs = Request.objects.all()   
+	return render(request, 'home.html', {'request_form':request_form, 
+										 'reqs': reqs})
 
 def go_to_register_page(request):
 	return render(request, 'register.html', {'registration_form': RegistrationForm})

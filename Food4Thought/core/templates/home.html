@@ -32,19 +32,21 @@
 			// Display all requests' location
 			// Create Google map
 			function createMap(lat, lon) {
+				// var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
+				// var icons = {
+				// 	chefs: {icon: iconBase + ''},
+				// 	requests: {icon: iconBase + 'info-i_maps.png'},
+				// 	yomama: {icon: iconBase + ''},
+				// }
+
+				// 1. Generate EntryForm{id} index from 0 - n 
+				// 2. 
 				// Retrieve all data from django
 				var cooks = [];
 
-				// TEST: Uncomment
-				// {% for location in locations %}
-				// 	cooks.push([{{location.lat}}, {{location.lon}}]);
-				// {% endfor %}
-
-				// TEST: remove 
-				cooks.push([-33.9174103, 151.2313068]);
-				cooks.push([-31, 152]);
-				cooks.push([-32, 151]);
-				cooks.push([-34, 150]);
+				{% for req in reqs %}
+					cooks.push([{{req.lat}}, {{req.lon}}]);
+				{% endfor %}
 
 				// Set center
 				var myLatLng = {lat: lat, lng: lon};
@@ -55,15 +57,18 @@
 
 			  	// Create info buble to display request data
 				var infowindow = new google.maps.InfoWindow();
-				var form = $("#entryform").clone().show();
-			    var infowindow_content = form[0];
+				
 				var marker;
 				for (var i = 0; i < cooks.length; i++) {  
+					var form = $("#entryform"+i).clone().show();
+				    var infowindow_content = form[0];
+
 				  	marker = new google.maps.Marker({
 				    	position: new google.maps.LatLng(cooks[i][0], cooks[i][1]),
 				    	map: map,
 				    	animation: google.maps.Animation.DROP,
-				    	dragable: false
+				    	dragable: false,
+				    	// icon: icons.chefs.icon
 				  	});
 
 				  	google.maps.event.addListener(marker, 'click', (function(marker, i) {
@@ -85,95 +90,76 @@
 			  	border-radius: 25px;
 			}
 
-			#entryform {
+			.entryform {
 			    display: none;
 			    width:300px;
 			    padding-bottom: 30px;
 			}
 	    </style>
 <body>
-<nav class="navbar navbar-default">
-		  <div class="container-fluid">
-		    <div class="navbar-header">
-		<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-		  I want to eat!
-		</button>
-		<a href="{% url 'logout' %}">logout </a>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+					  I want to eat!
+				</button>
+				<a href="{% url 'logout' %}">logout </a>
 
-		<!-- Modal -->
-		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		  <div class="modal-dialog" role="document">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-		      </div>
-		      <div class="modal-body">
-				<form method="post" action="{% url 'login' %}">
-		     <div class="form-group">
-		             {{request_form.order}}
-		         </div>
-		         <div class="form-group">
-		             {{request_form.info}}
-		         </div>
-		        <button type="submit" class="btn">Submit</button>
+				<!-- Modal -->
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+					      </div>
+					      <div class="modal-body">
+							<form method="post" action="{% url 'login' %}">
+					     <div class="form-group">
+					             {{request_form.order}}
+					         </div>
+					         <div class="form-group">
+					             {{request_form.info}}
+					         </div>
+					        <button type="submit" class="btn">Submit</button>
 
-		            {% csrf_token %}
-		        </form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        <button type="button" class="btn btn-primary">Save changes</button>
-		      </div>
-		    </div>
-		  </div>
+					            {% csrf_token %}
+					        </form>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					        <button type="button" class="btn btn-primary">Save changes</button>
+					      </div>
+					    </div>
+					  </div>
+				</div>
+			</div>
 		</div>
-		    </div>
-		  </div>
-</nav>
-<div id="map"></div>
- 
-	    
-
-
-	  	<div id="entryform" id="entryform">
-		    <h1>Add me!</h1>
+	</nav>
+	<div id="map"></div>
+	{% for req in reqs %}
+	  	<div id="entryform{{req.id}}" class="entryform">
+		    <h1>{{req.order}}</h1>
 		    <form role="form" >
 		        <div class="form-group">
-		            <label>Your Name</label>
-		            <input type="text" class="form-control" name="user" placeholder="Enter your name" required="yes">
-		        </div>
-		        <div class="form-group">
-		            <label>Title</label>
-		            <input type="text" class="form-control" name="name" placeholder="Enter a title" required="yes">
-		        </div>
+		            <label>This is a request from {{req.uid.first_name}}</label> 
 		        <div class="form-group">
 		            <label>What is this?</label>
-		            <div class="radio">
-		                <label>
-		                <input type="radio" name="category" value="asset" checked>
-		                    <span class="glyphicon glyphicon-thumbs-up"></span> an asset
-		                </label>
-		            </div>
-		            <div class="radio">
-		                <label>
-		                <input type="radio" name="category" value="deficit">
-		                    <span class="glyphicon glyphicon-thumbs-down"></span> a deficit
-		                </label>
-		            </div>
 		        </div>
 		        <div class="form-group">
 		            <label>Description</label>
-		            <textarea name="description" class="form-control" rows="3" required="yes"></textarea>
+		            <textarea disabled="true" name="description" class="form-control" rows="3" required="no">{{req.details}}</textarea>
+		        </div>
+		        <div class="form-group">
+		            <label>Your offer</label>
+		            <textarea name="description" class="form-control" rows="3" required="no" placeholder="Your offer to make this request"></textarea>
 		        </div>
 		        <div class="form-group">
 		            <button class="btn btn-primary">submit</button>
 		        </div>
 		    </form>
 		</div>
+	{% endfor %}
 
-
-
-	</body>
-
-	</html>
+</body>
+</html>
