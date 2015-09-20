@@ -10,19 +10,21 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkNjPt7dfPdQjFmsksrzq8s1KQwi21UdM&callback=initMap"></script>
 		<script type="text/javascript">	    
-		  	
 		  	// Initialize Google map
 		  	// Center to user's location
 		  	function initMap() {
 				if (navigator.geolocation) {
  			     	success = function(position) {
+ 			     		var elem = document.getElementById("ulat");
+ 			     		console.log("Hey");
+						elem.value = position.coords.latitude;
+						var elem2 = document.getElementById("ulong");
+						elem2.value = position.coords.longitude;
 			        	createMap(position.coords.latitude, position.coords.longitude);
 			      	};
- 			      	
  			      	error = function() { 
  			      		createMap(-33.9174103, 151.2313068); 
  			      	}
- 
  			    	navigator.geolocation.getCurrentPosition(success, error);
  			    } else {
 			    	createMap(-33.9174103, 151.2313068);
@@ -109,22 +111,24 @@
 		        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
 		      </div>
 		      <div class="modal-body">
-				<form method="post" action="{% url 'login' %}">
+				<form method="post" action="{% url 'request_order' %}">
 		     <div class="form-group">
 		             {{request_form.order}}
 		         </div>
 		         <div class="form-group">
-		             {{request_form.info}}
-		         </div>
-		        <button type="submit" class="btn">Submit</button>
+		         	{{request_form.info}}		  
 
+				</div>
+				<input id="ulat" type="hidden" name="lantitude" value="0"></input>
+				<input id="ulong" type="hidden" name="longtitude" value="0"></input>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="submit" class="btn btn-primary">Send Request</button>
+		      </div>
 		            {% csrf_token %}
 		        </form>
 		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-		        <button type="button" class="btn btn-primary">Save changes</button>
-		      </div>
+
 		    </div>
 		  </div>
 		</div>
