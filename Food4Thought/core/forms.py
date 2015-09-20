@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
-from models import *
+from core.models import *
 from django.forms.widgets import RadioSelect
 from django.forms.extras.widgets import SelectDateWidget
 

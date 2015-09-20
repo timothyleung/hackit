@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from forms import *
+from core.forms import *
 
 urlpatterns = patterns('',
     url(r'^$', 'core.views.home', name='home'),
