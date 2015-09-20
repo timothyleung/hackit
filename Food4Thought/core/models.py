@@ -14,7 +14,7 @@ class UserProfile(models.Model):
 	rate = models.IntegerField()
 
 class RequestManager(models.Manager):
-	def create_menu(self, uid, order, info):
+	def create_request(self, uid, order, info, lon, lat):
 		request = self.create(uid = uid, 
 							  order = order, 
 							  lon = lon, 
@@ -30,6 +30,8 @@ class Request(models.Model):
 	# where = models.CharField(max_length=140, blank=False)
 	lat = models.FloatField(blank=False)
 	lon = models.FloatField(blank=False)
+	objects = RequestManager()
+
 
 	def __unicode__(self):
 		return "Request " + str(self.id) + " " + self.order 
@@ -46,6 +48,7 @@ class StateManager(models.Manager):
 
 class State(models.Model):
 	state = models.CharField(max_length=10, blank=False)
+	objects = StateManager()
 
 	def __unicode__(self):
 		return "State " + state 
@@ -60,6 +63,7 @@ class Transaction(models.Model):
 	rid = models.ForeignKey(Request)
 	uid = models.ForeignKey(User)
 	stateid = models.ForeignKey(State)
+	objects = TransactionManager()
 
 	def __unicode__(self):
 		return "Transaction " + str(self.id)
@@ -80,6 +84,7 @@ class Review(models.Model):
 	u2id = models.ForeignKey(User, related_name="u2id")
 	stars = models.IntegerField()
 	comment = models.CharField(max_length=140, blank=False)
-
+	objects = ReviewManager()
+	
 	def __unicode__(self):
 		return "Review " + str(self.id)

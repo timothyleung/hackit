@@ -60,8 +60,14 @@ def register(request):
     # login automatically after registration 
 	return redirect(reverse('home'))
 
+@login_required
 def request_order(request):
-
-	return render(request, 'home.html', {'request_form':request_form})
+	print (request.POST) # got everything 
+	# create a new request object and save 
+	post = request.POST
+	request_obj = Request.objects.create_request(uid=request.user, order=post['order'], info=post['info'], lat=post['lantitude'], lon=post['longtitude'])
+	request_obj.save()
 	
+	return render(request, 'home.html', {'request_form':RequestForm})
+
 

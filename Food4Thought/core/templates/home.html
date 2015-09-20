@@ -10,19 +10,20 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 		<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkNjPt7dfPdQjFmsksrzq8s1KQwi21UdM&callback=initMap"></script>
 		<script type="text/javascript">	    
-		  	
 		  	// Initialize Google map
 		  	// Center to user's location
 		  	function initMap() {
 				if (navigator.geolocation) {
  			     	success = function(position) {
+ 			     		var elem = document.getElementById("ulat"); 
+						elem.value = position.coords.latitude;
+						var elem2 = document.getElementById("ulong");
+						elem2.value = position.coords.longitude;
 			        	createMap(position.coords.latitude, position.coords.longitude);
 			      	};
- 			      	
  			      	error = function() { 
  			      		createMap(-33.9174103, 151.2313068); 
  			      	}
- 
  			    	navigator.geolocation.getCurrentPosition(success, error);
  			    } else {
 			    	createMap(-33.9174103, 151.2313068);
@@ -38,10 +39,6 @@
 				// 	requests: {icon: iconBase + 'info-i_maps.png'},
 				// 	yomama: {icon: iconBase + ''},
 				// }
-
-				// 1. Generate EntryForm{id} index from 0 - n 
-				// 2. 
-				// Retrieve all data from django
 				var cooks = [];
 
 				{% for req in reqs %}
@@ -60,6 +57,8 @@
 				
 				var marker;
 				for (var i = 0; i < cooks.length; i++) {  
+					console.log(cooks);
+					console.log("#entryform"+i);
 					var form = $("#entryform"+i).clone().show();
 				    var infowindow_content = form[0];
 
@@ -107,42 +106,46 @@
 
 				<!-- Modal -->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-					  <div class="modal-dialog" role="document">
+					<div class="modal-dialog" role="document">
 					    <div class="modal-content">
-					      <div class="modal-header">
-					        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-					      </div>
-					      <div class="modal-body">
-							<form method="post" action="{% url 'login' %}">
-					     <div class="form-group">
-					             {{request_form.order}}
-					         </div>
-					         <div class="form-group">
-					             {{request_form.info}}
-					         </div>
-					        <button type="submit" class="btn">Submit</button>
+					      	<div class="modal-header">
+					        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+					      	</div>
+					      	<div class="modal-body">
+								<form method="post" action="{% url 'login' %}">
+						     		<div class="form-group">
+						             	{{request_form.order}}
+						         	</div>
+						         	<div class="form-group">
+						             	{{request_form.info}}
+						         	</div>
+						        	<button type="submit" class="btn">Submit</button>
 
-					            {% csrf_token %}
-					        </form>
-					      </div>
-					      <div class="modal-footer">
-					        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					        <button type="button" class="btn btn-primary">Save changes</button>
-					      </div>
+						            {% csrf_token %}
+					        	</form>
+					      	</div>
+
+					      	<div class="modal-footer">
+					      		<input id="ulat" type="hidden" name="lantitude" value="0"/>
+					      		<input id="ulong" type="hidden" name="longtitude" value="0"/>
+						        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						        <button type="button" class="btn btn-primary">Save changes</button>
+						    </div>
 					    </div>
-					  </div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</nav>
 	<div id="map"></div>
 	{% for req in reqs %}
-	  	<div id="entryform{{req.id}}" class="entryform">
+	  	<div id="entryform{{forloop.counter0}}" class="entryform">
 		    <h1>{{req.order}}</h1>
 		    <form role="form" >
 		        <div class="form-group">
-		            <label>This is a request from {{req.uid.first_name}}</label> 
+		            <label>This is a request from {{req.uid.username}}</label> 
+		        </div>
 		        <div class="form-group">
 		            <label>What is this?</label>
 		        </div>
