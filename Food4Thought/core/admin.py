@@ -19,10 +19,13 @@ class StateAdmin(admin.ModelAdmin):
     list_display = ['state']
 
 class TransactionAdmin(admin.ModelAdmin):
-    list_display  = ['rid', 'uid', 'stateid']
+    list_display  = ['rid', 'uid', 'stateid', 'offer', 'read', 'approve']
 
 class ReviewAdmin(admin.ModelAdmin):
     list_display = ['tid', 'u1id', 'u2id', 'stars', 'comment']
+
+class ActiveUserAdmin(admin.ModelAdmin):
+	list_display = ['uid', 'lng', 'lat']
 
 admin.site.unregister(User)
 admin.site.register(User, UserProfileAdmin)
@@ -30,3 +33,4 @@ admin.site.register(Request , RequestAdmin)
 admin.site.register(State, StateAdmin)
 admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(Review, ReviewAdmin)
+admin.site.register(ActiveUser, ActiveUserAdmin)

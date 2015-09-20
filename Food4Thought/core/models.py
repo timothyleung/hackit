@@ -26,8 +26,7 @@ class RequestManager(models.Manager):
 class Request(models.Model):
 	uid = models.ForeignKey(User)
 	order = models.CharField(max_length=140, blank=False)
-	info = models.CharField(max_length=200, blank=True)
-	# where = models.CharField(max_length=140, blank=False)
+	info = models.CharField(max_length=200, blank=True) 
 	lat = models.FloatField(blank=False)
 	lon = models.FloatField(blank=False)
 	objects = RequestManager()
@@ -63,6 +62,9 @@ class Transaction(models.Model):
 	rid = models.ForeignKey(Request)
 	uid = models.ForeignKey(User)
 	stateid = models.ForeignKey(State)
+	offer = models.FloatField()
+	read = models.BooleanField()
+	approve = models.BooleanField()
 	objects = TransactionManager()
 
 	def __unicode__(self):
@@ -88,3 +90,18 @@ class Review(models.Model):
 	
 	def __unicode__(self):
 		return "Review " + str(self.id)
+
+class ActiveUserManager(models.Manager):
+	def create_active_user(self, uid, lng, lat):
+		active_user = self.create(uid=uid, lng=lng, lat=lat)	
+		active_user.save()
+		return active_user
+
+class ActiveUser(models.Model):
+	uid = models.ForeignKey(User)
+	lng = models.FloatField(blank=False)
+	lat = models.FloatField(blank=False)
+	objects = ActiveUserManager()
+
+	def __unicode__(self):
+		return "Active User: " + str(uid)
