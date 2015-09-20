@@ -14,6 +14,8 @@ from django.core.urlresolvers import reverse
 @login_required
 def home(request):
 	print "HOME IS CALLED"
+	user = request.user
+	print user.profile.phone_number, user.first_name, user.username
 	#profile, created = UserProfile.objects.get_or_create(user=request.user, defaults={'can_cook':False, 'rate':0,})
 	request_form = RequestForm(request.POST)
 	return render(request, 'home.html', {'request_form':request_form})
@@ -55,4 +57,8 @@ def register(request):
     # login automatically after registration 
 	return redirect(reverse('home'))
 
+def request_order(request):
+
+	return render(request, 'home.html', {'request_form':request_form})
+	
 

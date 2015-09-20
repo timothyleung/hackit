@@ -96,7 +96,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+# login page, our front page
+LOGIN_URL = '/core/login'
 
+# Default URL to redirect to after a user logs in. This will redirect to 'home'
+LOGIN_REDIRECT_URL = '/core/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
