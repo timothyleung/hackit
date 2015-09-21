@@ -26,6 +26,16 @@ class RequestForm(forms.ModelForm):
                                                     'placeholder': 'Info'}),
         }
 
+class TransactionForm(forms.ModelForm):
+    class Meta:
+        model=Transaction
+        fields = "__all__"
+        exclude = {'rid', 'uid', 'stateid', 'read', 'approve'}
+        widgets = {
+            'offer' : forms.TextInput(attrs={'class':'form-control',
+                                                     'placeholder': 'offer'})
+        }
+
 class RegistrationForm(forms.Form):
     name = forms.CharField(max_length = 20, 
                                  label = '',

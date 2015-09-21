@@ -22,6 +22,7 @@ def home(request):
 	# Get all available request
 	reqs = Request.objects.all()   
 	return render(request, 'home.html', {'request_form':request_form, 
+										 'transaction_form': TransactionForm,
 										 'reqs': reqs})
 
 def go_to_register_page(request):
@@ -69,5 +70,46 @@ def request_order(request):
 	request_obj.save()
 	
 	return render(request, 'home.html', {'request_form':RequestForm})
+
+@login_required
+def accept_order(request):
+	print(request.POST)
+	p = request.POST 
+	context = {}
+	rid = int(p['rid'])
+	r = Request.objects.get(id=rid)
+	uid = request.user
+	stateid = False
+	offer = p['offer']
+	read = False
+	approve = False
+	t = Transaction.objects.create_transaction(rid=r,uid=uid, stateid=stateid, offer=offer, read=read, approve=approve)
+	t.save()
+	return redirect(reverse('home'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

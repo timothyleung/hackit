@@ -53,15 +53,25 @@ class State(models.Model):
 		return "State " + state 
 
 class TransactionManager(models.Manager):
-	def create_transaction(self, rid, uid, stateid):
-		transaction = self.create(rid=rid, uid=udi, stateid=stateid)
-		transaction.save()
-		return transaction
+	def create_transaction(self, 
+						   rid, 
+						   uid, 
+						   stateid, 
+						   offer, 
+						   read, 
+						   approve):
+		t = self.create(rid=rid, uid=uid, 
+								  stateid=stateid, 
+								  offer=offer, 
+								  read=read, 
+								  approve=approve)
+		t.save()
+		return t
 
 class Transaction(models.Model):
 	rid = models.ForeignKey(Request)
 	uid = models.ForeignKey(User)
-	stateid = models.ForeignKey(State)
+	stateid = models.BooleanField()
 	offer = models.FloatField()
 	read = models.BooleanField()
 	approve = models.BooleanField()
